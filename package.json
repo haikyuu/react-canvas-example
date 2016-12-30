@@ -6,8 +6,11 @@
     "react-scripts": "0.8.4"
   },
   "dependencies": {
+    "eslint-plugin-react": "^6.8.0",
+    "konva": "^1.2.2",
     "react": "^15.4.1",
-    "react-dom": "^15.4.1"
+    "react-dom": "^15.4.1",
+    "react-konva": "^1.1.1"
   },
   "scripts": {
     "start": "react-scripts start",

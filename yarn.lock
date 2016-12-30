@@ -1864,6 +1864,13 @@ eslint-plugin-jsx-a11y@2.2.3:
     jsx-ast-utils "^1.0.0"
     object-assign "^4.0.1"
 
+eslint-plugin-react:
+  version "6.8.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-6.8.0.tgz#741ab5438a094532e5ce1bbb935d6832356f492d"
+  dependencies:
+    doctrine "^1.2.2"
+    jsx-ast-utils "^1.3.4"
+
 eslint-plugin-react@6.4.1:
   version "6.4.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-6.4.1.tgz#7d1aade747db15892f71eee1fea4addf97bcfa2b"
@@ -2079,7 +2086,7 @@ fb-watchman@^1.8.0, fb-watchman@^1.9.0:
   dependencies:
     bser "^1.0.2"
 
-fbjs@^0.8.1, fbjs@^0.8.4:
+fbjs@^0.8.1, fbjs@^0.8.4, fbjs@^0.8.6:
   version "0.8.8"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.8.tgz#02f1b6e0ea0d46c24e0b51a2d24df069563a5ad6"
   dependencies:
@@ -3161,7 +3168,7 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.3.6"
 
-jsx-ast-utils@^1.0.0, jsx-ast-utils@^1.3.1:
+jsx-ast-utils@^1.0.0, jsx-ast-utils@^1.3.1, jsx-ast-utils@^1.3.4:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/jsx-ast-utils/-/jsx-ast-utils-1.3.5.tgz#9ba6297198d9f754594d62e59496ffb923778dd4"
   dependencies:
@@ -3179,6 +3186,10 @@ klaw@^1.0.0:
   resolved "https://registry.yarnpkg.com/klaw/-/klaw-1.3.1.tgz#4088433b46b3b1ba259d78785d8e96f73ba02439"
   optionalDependencies:
     graceful-fs "^4.1.9"
+
+konva:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/konva/-/konva-1.2.2.tgz#ed72bee1d7f51c3ddd09b8dc0a87bf9a1ef82f43"
 
 lazy-cache@^1.0.3:
   version "1.0.4"
@@ -4242,6 +4253,13 @@ react-dom:
   dependencies:
     fbjs "^0.8.1"
     loose-envify "^1.1.0"
+    object-assign "^4.1.0"
+
+react-konva:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-konva/-/react-konva-1.1.1.tgz#93d972a6243a3b4126a42f51bf72457dec43436c"
+  dependencies:
+    fbjs "^0.8.6"
     object-assign "^4.1.0"
 
 react-scripts:

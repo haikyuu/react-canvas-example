@@ -1,21 +1,51 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import Konva from 'konva'
+import {
+    Layer, Rect, Stage,
+    // Group,
+} from 'react-konva';
+class MyRect extends React.Component {
+    constructor(...args) {
+        super(...args);
+        this.state = {
+            color: 'green'
+        };
+        this.handleClick = this.handleClick.bind(this);
+    }
+    handleClick() {
+        this.setState({color: Konva.Util.getRandomColor()});
+    }
+    render() {
+        return (
+          <Rect
+           x={10}
+           y={10}
+           width={50}
+           height={50}
+           fill={this.state.color}
+           shadowBlur={10}
+           onClick={this.handleClick}
+           draggable
+           shadowColor='black'
+         />
+       );
+    }
+}
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+class App extends React.Component {
+    constructor(props) {
+        super(props)
+    }
+    render() {
+        return (
+            <Stage ref="stage" width={700} height={700}>
+                <Layer ref="layer">
+                    <MyRect/>
+                </Layer>
+            </Stage>
+        );
+    }
 }
 
 export default App;
