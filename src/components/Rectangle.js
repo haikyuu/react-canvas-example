@@ -4,6 +4,8 @@ import { observer } from 'mobx-react'
 function Rectangle(props){
   return (
     <Rect
+     ref={props.id}
+     key={props.id}
      x={props.x}
      y={props.y}
      onClick={props.onClick}

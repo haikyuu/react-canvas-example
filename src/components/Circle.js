@@ -6,7 +6,7 @@ function circle(props){
     <Circle
      x={props.x}
      y={props.y}
-     radius={props.size/2}
+     radius={props.size}
      cornerRadius={5}
      fill={'steelblue'}
      shadowBlur={10}

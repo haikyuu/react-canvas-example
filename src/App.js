@@ -1,86 +1,124 @@
-import React from 'react';
-import './App.css';
+import React from 'react'
+import './App.css'
 import {
-    Layer, Stage, Group
-} from 'react-konva';
+    Layer, Stage,
+} from 'react-konva'
 import { CanvasStore } from './stores'
 import { observer } from 'mobx-react'
 import {
   Rectangle,
   Circle,
 } from './components'
-import DevTools from 'mobx-react-devtools';
+import DevTools from 'mobx-react-devtools'
+import { map, findIndex } from 'lodash/fp'
+import uuid from 'uuid/v1'
+const store = CanvasStore
 
-const store = new CanvasStore()
 class App extends React.Component {
     onClick(e) {
-      store.delete(e)
+      const index = store('elements', findIndex(el=>el.id === e.id))
+      store('elements').splice(index, 1)
     }
     onWheel({event, e}) {
-      const newSize = e.element.size + event.evt.deltaX * 5
+      const newSize = e.size + event.evt.deltaX * 5
       if (newSize < 10) {
         return
       }
-      e.edit({
-        size: newSize,
-      })
+      const index = store('elements', findIndex(el=>el.id === e.id))
+      store('elements')[index].size = newSize
     }
     onDragEnd({event, e}) {
-      e.edit({
-        x: event.target.x(),
-        y: event.target.y(),
-      })
+      const index = store('elements', findIndex(el=>el.id === e.id))
+      store('elements')[index].coords = {
+        x: event.target.attrs.x,
+        y: event.target.attrs.y,
+      }
     }
     addRectangle(){
-      store.addElement({type: 'rectangle'})
+      store('elements').push({
+        coords:{
+          x: 10,
+          y: 10,
+        },
+        size: 50,
+        id: uuid(),
+        type: 'rectangle',
+      })
     }
     addCircle(){
-      store.addElement({type: 'circle'})
+      store('elements').push({
+        coords:{
+          x: 10,
+          y: 10,
+        },
+        size: 50/2,
+        id: uuid(),
+        type: 'circle',
+      })
+    }
+    getElements(){
+      const elements = store('elements', map(e=>{
+        if (e.type === 'rectangle') {
+          return (
+            <Rectangle
+              key={e.id}
+              ref={e.id}
+              x={e.coords.x}
+              y={e.coords.y}
+              size={e.size}
+              onClick={()=>this.onClick(e)}
+              onWheel={(event)=>this.onWheel({event, e})}
+              onDragEnd={(event)=>this.onDragEnd({event, e})}
+            />
+          )
+        }
+        if (e.type === 'circle') {
+          return (
+            <Circle
+              key={e.id}
+              ref={e.id}
+              x={e.coords.x}
+              y={e.coords.y}
+              size={e.size}
+              onClick={()=>this.onClick(e)}
+              onWheel={(event)=>this.onWheel({event, e})}
+              onDragEnd={(event)=>this.onDragEnd({event, e})}
+            />
+          )
+        }
+        return console.warn('unkown type')
+      })
+    )
+    return elements
+    }
+    undo() {
+      if (store.canUndo('elements')) {
+        store.undo('elements')
+      }
+    }
+    redo() {
+      if (store.canRedo('elements')) {
+        store.redo('elements')
+      }
     }
     render() {
         return (
           <div>
             <button onClick={this.addRectangle}>+ rectangle</button>
             <button onClick={this.addCircle}>+ circle</button>
+            <button onClick={this.undo}>undo</button>
+            <button onClick={this.redo}>redo</button>
             <DevTools />
-            <Stage ref="stage" width={store.width} height={store.height}>
+            <Stage ref="stage" width={store('size').get('width')} height={store('size').get('height')}>
               <Layer ref="layer">
-                <Group width={50} height={50} draggable ref="group">
                   {
-                    store.elements.map(e=>{
-                      if (e.element.type === 'rectangle') {
-                        return (
-                          <Rectangle
-                            key={e.element.id}
-                            ref={e.element.id}
-                            {...e.element}
-                            onClick={()=>this.onClick(e)}
-                            onWheel={(event)=>this.onWheel({event, e})}
-                            onDragEnd={(event)=>this.onDragEnd({event, e})}
-
-                          />
-                        )
-                      }
-                      if (e.element.type === 'circle') {
-                        return (
-                          <Circle
-                            key={e.element.id}
-                            ref={e.element.id}
-                            {...e.element}
-                            onClick={()=>this.onClick(e)}
-                            onWheel={(event)=>this.onWheel({event, e})}
-                            onDragEnd={(event)=>this.onDragEnd({event, e})}
-                          />
-                        )
-                      }
-                    })
+                    this.getElements()
                   }
-                </Group>
                 </Layer>
               </Stage>
 
           </div>
-        );
+        )
     }
 }
 

@@ -1,24 +1,20 @@
-import { extendObservable } from 'mobx'
-import Element from './Element'
-import _ from 'lodash'
-export default class CanvasStore {
-    constructor() {
-      extendObservable(this, {
+import mobxstore from 'mobx-store'
+import localstorage from 'mobx-store/localstorage'
+let localstorageInitialState = localstorage.read('canvas')
+let initialState
+if (!localstorageInitialState.size || !localstorageInitialState.elements) {
+  initialState = {
+      size:{
         width: 1200,
         height: 1200,
-        elements:[
-          new Element()
-        ],
-        get report() {
-            return this.elements.length
-        }
-      })
-    }
-    addElement(props = {size: 50, x: 10, y: 10}){
-      this.elements.push(new Element(props))
-    }
-    delete(e){
-      const index = _.findIndex(this.elements, el=>el.element.id === e.element.id)
-      this.elements.splice(index, 1)
-    }
+      },
+      elements: [],
+  }
+}else{
+  initialState = localstorageInitialState
 }
+
+const store = mobxstore(initialState)
+store.schedule([localstorage.write, 'canvas', store])
+
+export default store
