@@ -31,12 +31,17 @@ class App extends React.Component {
       store('elements').splice(index, 1)
     }
     onWheel({event, e}) {
-      const newSize = e.size + event.evt.deltaX * 5
+      let newSize = e.width + event.evt.deltaX * 5
       if (newSize < 10) {
-        return
+        newSize = 10
       }
       const index = store('elements', findIndex(el=>el.id === e.id))
-      store('elements')[index].size = newSize
+      store('elements')[index] = {
+        ...store('elements')[index],
+        width: newSize,
+        height: newSize,
+        radius: newSize,
+      }
     }
     onDragEnd({event, e}) {
       const index = store('elements', findIndex(el=>el.id === e.id))
@@ -67,7 +72,6 @@ class App extends React.Component {
             {...e} />
         )
       }))
-      console.log("elements: ", elements)
       return elements
     }
     undo() {
@@ -87,7 +91,7 @@ class App extends React.Component {
             <button onClick={this.addCircle}>+ circle</button>
             <button onClick={this.undo}>undo</button>
             <button onClick={this.redo}>redo</button>
-            <DevTools />
+            {/* <DevTools /> */}
             <Stage ref="stage" width={store('size').get('width')} height={store('size').get('height')}>
               <Layer ref="layer">
                   {
