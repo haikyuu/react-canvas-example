@@ -6,8 +6,7 @@ import {
 import { CanvasStore } from './stores'
 import { observer } from 'mobx-react'
 import {
-  Rectangle,
-  Circle,
+  Shape
 } from './components'
 import DevTools from 'mobx-react-devtools'
 import { map, findIndex } from 'lodash/fp'
@@ -15,6 +14,18 @@ import uuid from 'uuid/v1'
 const store = CanvasStore
 
 class App extends React.Component {
+    addRectangle(){
+      store('elements').push({
+        coords:{
+          x: 10,
+          y: 10,
+        },
+        height: 50,
+        width: 50,
+        id: uuid(),
+        type: 'rectangle',
+      })
+    }
     onClick(e) {
       const index = store('elements', findIndex(el=>el.id === e.id))
       store('elements').splice(index, 1)
@@ -34,62 +45,30 @@ class App extends React.Component {
         y: event.target.attrs.y,
       }
     }
-    addRectangle(){
-      store('elements').push({
-        coords:{
-          x: 10,
-          y: 10,
-        },
-        size: 50,
-        id: uuid(),
-        type: 'rectangle',
-      })
-    }
     addCircle(){
       store('elements').push({
         coords:{
           x: 10,
           y: 10,
         },
-        size: 50/2,
+        radius: 50/2,
         id: uuid(),
         type: 'circle',
       })
     }
     getElements(){
       const elements = store('elements', map(e=>{
-        if (e.type === 'rectangle') {
-          return (
-            <Rectangle
-              key={e.id}
-              ref={e.id}
-              x={e.coords.x}
-              y={e.coords.y}
-              size={e.size}
-              onClick={()=>this.onClick(e)}
-              onWheel={(event)=>this.onWheel({event, e})}
-              onDragEnd={(event)=>this.onDragEnd({event, e})}
-            />
-          )
-        }
-        if (e.type === 'circle') {
-          return (
-            <Circle
-              key={e.id}
-              ref={e.id}
-              x={e.coords.x}
-              y={e.coords.y}
-              size={e.size}
-              onClick={()=>this.onClick(e)}
-              onWheel={(event)=>this.onWheel({event, e})}
-              onDragEnd={(event)=>this.onDragEnd({event, e})}
-            />
-          )
-        }
-        return console.warn('unkown type')
-      })
-    )
-    return elements
+        return (
+          <Shape
+            key={e.id}
+            onClick={()=>this.onClick(e)}
+            onDragEnd={(event)=>this.onDragEnd({event, e})}
+            onWheel={(event)=>this.onWheel({event, e})}
+            {...e} />
+        )
+      }))
+      console.log("elements: ", elements)
+      return elements
     }
     undo() {
       if (store.canUndo('elements')) {

@@ -16,5 +16,5 @@ if (!localstorageInitialState.size || !localstorageInitialState.elements) {
 
 const store = mobxstore(initialState)
 store.schedule([localstorage.write, 'canvas', store])
-
+// store('elements').replace([])
 export default store

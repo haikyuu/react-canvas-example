@@ -1,7 +1,5 @@
-import Rectangle from './Rectangle'
-import Circle from './Circle'
+import Shape from './Shape'
 
 export {
-  Rectangle,
-  Circle,
+  Shape,
 }
