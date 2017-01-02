@@ -31,11 +31,17 @@ class App extends React.Component {
       store('elements').splice(index, 1)
     }
     onWheel({event, e}) {
-      let newSize = e.width + event.evt.deltaX * 5
+      const index = store('elements', findIndex(el=>el.id === e.id))
+      let size
+      if (store('elements')[index].type === 'circle') {
+        size = store('elements')[index].radius
+      }else{
+        size = store('elements')[index].width
+      }
+      let newSize = size + event.evt.deltaX * 5
       if (newSize < 10) {
         newSize = 10
       }
-      const index = store('elements', findIndex(el=>el.id === e.id))
       store('elements')[index] = {
         ...store('elements')[index],
         width: newSize,
