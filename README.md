@@ -1,3 +1,8 @@
+#React Canvas Example
+
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/hyperium/hyper/master/LICENSE)
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 This project showcases using canvas in [react](https://github.com/facebook/react).
