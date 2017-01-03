@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.css'
 import {
-    Layer, Stage,
+    Layer, Stage
 } from 'react-konva'
 import { CanvasStore } from './stores'
 import { observer } from 'mobx-react'
@@ -11,9 +11,16 @@ import {
 import DevTools from 'mobx-react-devtools'
 import { map, findIndex } from 'lodash/fp'
 import uuid from 'uuid/v1'
+import _ from 'lodash'
 const store = CanvasStore
 
 class App extends React.Component {
+    constructor(props){
+      super(props)
+      this.state = {
+        linked: false
+      }
+    }
     addRectangle(){
       store('elements').push({
         coords:{
@@ -29,6 +36,9 @@ class App extends React.Component {
     onClick(e) {
       const index = store('elements', findIndex(el=>el.id === e.id))
       store('elements').splice(index, 1)
+    }
+    reset() {
+      store('elements').replace([])
     }
     onWheel({event, e}) {
       const index = store('elements', findIndex(el=>el.id === e.id))
@@ -90,6 +100,25 @@ class App extends React.Component {
         store.redo('elements')
       }
     }
+    linkShapes(){
+      const i = _.findIndex(store('elements'), e=>e.type==='line')
+      if (i !== -1) {
+        return console.warn('only one line is allowed. :p');
+      }
+      const firstElement = store('elements')[0]
+      const secondElement = store('elements')[1]
+      if (store('elements', map(e=>e)).length > 1 ) {
+        debugger
+        store('elements').push({
+          linkedShapesIndexes:[0, 1],
+          id: uuid(),
+          type: 'line',
+        })
+        this.setState({
+          linked: true
+        })
+      }
+    }
     render() {
         return (
           <div>
@@ -97,6 +126,8 @@ class App extends React.Component {
             <button onClick={this.addCircle}>+ circle</button>
             <button onClick={this.undo}>undo</button>
             <button onClick={this.redo}>redo</button>
+            <button onClick={this.linkShapes.bind(this)}>link</button>
+            <button onClick={this.reset.bind(this)}>reset</button>
             {/* <DevTools /> */}
             <Stage ref="stage" width={store('size').get('width')} height={store('size').get('height')}>
               <Layer ref="layer">

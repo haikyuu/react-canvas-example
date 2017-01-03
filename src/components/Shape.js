@@ -1,7 +1,7 @@
 import React from 'react'
-import { Circle, Rect } from 'react-konva'
+import { Circle, Rect, Line } from 'react-konva'
 import { observer } from 'mobx-react'
-
+import {CanvasStore} from '../stores'
 function Shape(props){
   // debugger
   const {
@@ -44,10 +44,27 @@ function Shape(props){
        shadowColor='black'
      />
  )
+ }else if (type === 'line'){
+   console.log("props: ", props)
+   const coords1 = CanvasStore('elements')[props.linkedShapesIndexes[0]].coords
+   const coords2 = CanvasStore('elements')[props.linkedShapesIndexes[1]].coords
+   console.log("coords1: ", coords1)
+   return <Line
+     points={[
+       coords1.x,
+       coords1.y,
+       coords2.x,
+       coords2.y,
+     ]}
+     stroke={'lightblue'}
+     strokeWidth={4}
+     lineCap={'round'}
+     lineJoin={'round'}
+   />
  }else{
    const error = `Unknown type ${type} given to Shape component as a prop `
    console.warn(error)
-   return <div>{error}</div>
+   return null
  }
 }
 export default observer(Shape)
