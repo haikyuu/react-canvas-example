@@ -8,7 +8,7 @@ import { observer } from 'mobx-react'
 import {
   Shape
 } from './components'
-import DevTools from 'mobx-react-devtools'
+// import DevTools from 'mobx-react-devtools'
 import { map, findIndex } from 'lodash/fp'
 import uuid from 'uuid/v1'
 import _ from 'lodash'
@@ -105,10 +105,7 @@ class App extends React.Component {
       if (i !== -1) {
         return console.warn('only one line is allowed. :p');
       }
-      const firstElement = store('elements')[0]
-      const secondElement = store('elements')[1]
       if (store('elements', map(e=>e)).length > 1 ) {
-        debugger
         store('elements').push({
           linkedShapesIndexes:[0, 1],
           id: uuid(),

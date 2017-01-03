@@ -6,7 +6,6 @@ function Shape(props){
   // debugger
   const {
     coords, radius, type, width, height, id,
-
     onDragEnd, onWheel, onClick,
   } = props
   if (type === 'circle') {
@@ -45,11 +44,9 @@ function Shape(props){
      />
  )
  }else if (type === 'line'){
-   console.log("props: ", props)
    const coords1 = CanvasStore('elements')[props.linkedShapesIndexes[0]].coords
    const coords2 = CanvasStore('elements')[props.linkedShapesIndexes[1]].coords
-   console.log("coords1: ", coords1)
-   return <Line
+   return (<Line
      points={[
        coords1.x,
        coords1.y,
@@ -60,7 +57,7 @@ function Shape(props){
      strokeWidth={4}
      lineCap={'round'}
      lineJoin={'round'}
-   />
+   />)
  }else{
    const error = `Unknown type ${type} given to Shape component as a prop `
    console.warn(error)
