@@ -35,6 +35,18 @@ class App extends React.Component {
     }
     onClick(e) {
       const index = store('elements', findIndex(el=>el.id === e.id))
+      //On delete CASCADE
+      const lineIndex = store(
+        'elements',
+        findIndex(el=>{
+          if (el.type === 'line' && el.linkedShapesIds.indexOf(e.id) > -1) {
+            return true
+          }
+          return false
+        }))
+      if (lineIndex !== -1) {
+        store('elements').splice(lineIndex, 1)
+      }
       store('elements').splice(index, 1)
     }
     reset() {
@@ -107,7 +119,10 @@ class App extends React.Component {
       }
       if (store('elements', map(e=>e)).length > 1 ) {
         store('elements').push({
-          linkedShapesIndexes:[0, 1],
+          linkedShapesIds:[
+            store('elements')[0].id,
+            store('elements')[1].id,
+          ],
           id: uuid(),
           type: 'line',
         })
