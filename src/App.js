@@ -78,6 +78,13 @@ class App extends React.Component {
         y: event.target.attrs.y,
       }
     }
+    onDragMove({event, e}) {
+      const index = store('elements', findIndex(el=>el.id === e.id))
+      store('elements')[index].coords = {
+        x: event.target.attrs.x,
+        y: event.target.attrs.y,
+      }
+    }
     addCircle(){
       store('elements').push({
         coords:{
@@ -96,6 +103,7 @@ class App extends React.Component {
             key={e.id}
             onClick={()=>this.onClick(e)}
             onDragEnd={(event)=>this.onDragEnd({event, e})}
+            onDragMove={(event)=>this.onDragMove({event, e})}
             onWheel={(event)=>this.onWheel({event, e})}
             {...e} />
         )

@@ -7,7 +7,7 @@ function Shape(props){
   // debugger
   const {
     coords, radius, type, width, height, id,
-    onDragEnd, onWheel, onClick,
+    onDragEnd, onWheel, onClick, onDragMove,
   } = props
   if (type === 'circle') {
     return (
@@ -22,6 +22,7 @@ function Shape(props){
         onClick={onClick}
         onWheel={onWheel}
         onDragEnd={onDragEnd}
+        onDragMove={onDragMove}
         draggable
         shadowColor='black'
       />
@@ -34,6 +35,7 @@ function Shape(props){
        y={coords.y}
        onClick={onClick}
        onDragEnd={onDragEnd}
+       onDragMove={onDragMove}
        onWheel={onWheel}
        width={width}
        height={height}
