@@ -1,5 +1,5 @@
-import mobxstore from 'mobx-store'
-import localstorage from 'mobx-store/localstorage'
+import mobxstore from 'mobx-store-plus'
+import localstorage from 'mobx-store-plus/localstorage'
 let localstorageInitialState = localstorage.read('canvas')
 let initialState
 if (!localstorageInitialState.size || !localstorageInitialState.elements) {

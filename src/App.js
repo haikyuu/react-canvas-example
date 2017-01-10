@@ -73,6 +73,17 @@ class App extends React.Component {
     }
     onDragEnd({event, e}) {
       const index = store('elements', findIndex(el=>el.id === e.id))
+      console.log("drag end");
+      store('elements')[index].coords = {
+        x: event.target.attrs.x,
+        y: event.target.attrs.y,
+      }
+      this.enableHistory()
+    }
+    onDragStart({event, e}) {
+      const index = store('elements', findIndex(el=>el.id === e.id))
+      console.log("drag start");
+      // this.enableHistory()
       store('elements')[index].coords = {
         x: event.target.attrs.x,
         y: event.target.attrs.y,
@@ -80,6 +91,8 @@ class App extends React.Component {
     }
     onDragMove({event, e}) {
       const index = store('elements', findIndex(el=>el.id === e.id))
+      console.log("drag move");
+      this.disableHistory()
       store('elements')[index].coords = {
         x: event.target.attrs.x,
         y: event.target.attrs.y,
@@ -104,6 +117,7 @@ class App extends React.Component {
             onClick={()=>this.onClick(e)}
             onDragEnd={(event)=>this.onDragEnd({event, e})}
             onDragMove={(event)=>this.onDragMove({event, e})}
+            onDragStart={(event)=>this.onDragStart({event, e})}
             onWheel={(event)=>this.onWheel({event, e})}
             {...e} />
         )
@@ -119,6 +133,15 @@ class App extends React.Component {
       if (store.canRedo('elements')) {
         store.redo('elements')
       }
+    }
+    test(){
+      store.test()
+    }
+    enableHistory(){
+      store.enableHistory()
+    }
+    disableHistory(){
+      store.disableHistory()
     }
     linkShapes(){
       const i = _.findIndex(store('elements'), e=>e.type==='line')
@@ -148,6 +171,9 @@ class App extends React.Component {
             <button onClick={this.redo}>redo</button>
             <button onClick={this.linkShapes.bind(this)}>link</button>
             <button onClick={this.reset.bind(this)}>reset</button>
+            <button onClick={this.test.bind(this)}>test</button>
+            <button onClick={this.enableHistory.bind(this)}>enable History</button>
+            <button onClick={this.disableHistory.bind(this)}>disable History</button>
             {/* <DevTools /> */}
             <Stage ref="stage" width={store('size').get('width')} height={store('size').get('height')}>
               <Layer ref="layer">
